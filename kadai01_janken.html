@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <script src="js/jquery-2.1.3.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="css/sample.css">
+    <title>じゃんけん</title>
+</head>
+
+<body>
+
+
+    <header class="p-4 text-3xl">
+        <h1>ジャンケン ポイッ！</h1>
+    </header>
+
+    <main>
+        <ul class="flex justify-center space-x-20 mb-14">
+            <li id="gu_btn" class=" bg-gray-800 hover:bg-gray-700 text-white rounded px-3 py-3 text-center w-1/6">グー</li>
+            <li id="cho_btn" class="bg-gray-800 hover:bg-gray-700 text-white rounded px-3 py-3 text-center w-1/6">チョキ</li>
+            <li id="par_btn" class="bg-gray-800 hover:bg-gray-700 text-white rounded px-3 py-3 text-center w-1/6">パー</li>
+        </ul>
+        <div class="flex items-center justify-center">
+            <div>あなた <span id="user_hands"></span></div>
+            <div class="p-10 m-2">vs</div>
+            <div>コンピュータ <span id="pc_hands"></span></div>
+            <div class="ml-20 p-4">
+                <div id="judgment"></div>
+                <div id="resultImage"></div> <!-- 画像を表示するためのエリアを追加 -->
+            </div>
+        </div>
+    </main>
+
+    <footer></footer>
+
+    <script>
+        // ユーザーがボタンをクリックしたときに呼び出される関数
+        function playGame(userChoice) {
+            // コンピューターの選択肢をランダムに決定する
+            const choices = ['グー', 'チョキ', 'パー'];
+            const computerChoice = choices[Math.floor(Math.random() * choices.length)];
+
+            // コンピューターの選択肢に対応する画像を決定する
+            let computerImage = '';
+            if (computerChoice === 'グー') {
+                computerImage = 'img/guu.jpg';
+            } else if (computerChoice === 'チョキ') {
+                computerImage = 'img/choki.jpg';
+            } else if (computerChoice === 'パー') {
+                computerImage = 'img/paa.jpg';
+            }
+
+            // ユーザーの選択肢に対応する画像を決定する
+            let userImage = '';
+            if (userChoice === 'グー') {
+                userImage = 'img/guu.jpg';
+            } else if (userChoice === 'チョキ') {
+                userImage = 'img/choki.jpg';
+            } else if (userChoice === 'パー') {
+                userImage = 'img/paa.jpg';
+            }
+
+            // 背景色を変更するための変数
+            let backgroundColor = '';
+
+            // 勝敗を判定する
+            let result = '';
+            let resultImage = '';
+            if (userChoice === computerChoice) {
+                result = '引き分けです！';
+                resultImage = '<img src="img/aiko.png" alt="引き分け" width="300">';
+                backgroundColor = '#FFFFAA';
+            } else if (
+                (userChoice === 'グー' && computerChoice === 'チョキ') ||
+                (userChoice === 'チョキ' && computerChoice === 'パー') ||
+                (userChoice === 'パー' && computerChoice === 'グー')
+            ) {
+                result = 'あなたの勝ち！';
+                resultImage = '<img src="img/joy.png" alt="勝ち" width="300">';
+                backgroundColor = '#FFDDFF'
+            } else {
+                result = 'あなたの負け！';
+                resultImage = '<img src="img/sad.png" alt="負け" width="300">';
+                backgroundColor = '#AAAAAA';
+            }
+
+            // 選択と結果を表示する
+            $('#user_hands').html('<img src="' + userImage + '" alt="' + userChoice + '" width="200">');
+            $('#pc_hands').html('<img src="' + computerImage + '" alt="' + computerChoice + '" width="200">');
+
+            $('#judgment').text(result);
+            $('#resultImage').html(resultImage); // 画像を表示する
+
+            // 背景色を変更する
+            $('body').css('background-color', backgroundColor);
+        }
+
+        // ボタンがクリックされたときにplayGame関数を呼び出すイベントリスナーを設定する
+        $(document).ready(function () {
+            $('#gu_btn').on('click', function () {
+                playGame('グー');
+            });
+            $('#cho_btn').on('click', function () {
+                playGame('チョキ');
+            });
+            $('#par_btn').on('click', function () {
+                playGame('パー');
+            });
+        });
+    </script>
+</body>
+
+</html>
